@@ -2,4 +2,4 @@
 bin
 lib
 #ignore all dict files
-*.dict
+#*.dict
