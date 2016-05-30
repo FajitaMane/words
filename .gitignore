@@ -1,0 +1,5 @@
+#ignore lib and bin
+bin
+lib
+#ignore all dict files
+*.dict
