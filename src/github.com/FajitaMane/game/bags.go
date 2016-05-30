@@ -46,6 +46,9 @@ func NewBag() *Bag {
 
 //seed a new random number and return a letter at index n
 func (bag *Bag) Draw() Tile {
+	if bag.tiles.Len() == 0 {
+		panic("bag is empty")
+	}
 	rand.Seed(time.Now().UTC().UnixNano())
 	index := rand.Intn(bag.tiles.Len())
 	i := 0

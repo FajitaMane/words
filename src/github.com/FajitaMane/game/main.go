@@ -10,7 +10,7 @@ func main() {
 	bag = NewBag()
 	fmt.Println("total of ", bag.tiles.Len(), " tiles")
 	var i int
-	for i = bag.tiles.Len(); i > 0; i = bag.tiles.Len() {
+	for i = bag.tiles.Len(); i > -5; i = bag.tiles.Len() {
 		fmt.Print("drew tile ")
 		tile_char := bag.Draw().char
 		fmt.Printf(string(tile_char))
