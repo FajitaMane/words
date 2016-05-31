@@ -1,10 +1,13 @@
 package main
 
 import (
+	"io"
+	"io/ioutil"
 	"bufio"
 	"bytes"
 	"fmt"
 	"strings"
+	"os"
 )
 
 const illegal_chars = " -'"
@@ -18,16 +21,16 @@ func isLegalWord(word string) bool {
 	return !beginsWithCap(word) && !strings.ContainsAny(word, illegal_chars)
 }
 
-func readLines() ([]string, error) {
+func readAndParseLines() ([]string, error) {
 	var lines []string
-	running := true
+	//running := true
 	file, err := ioutil.ReadFile("assets/words.dict")
 	if err != nil {
 		panic(err)
 	}
 	buf := bytes.NewBuffer(file)
 	for {
-		line, err := buf.ReadString("\n")
+		line, err := buf.ReadString('\n')
 		if len(line) == 0 {
 			if err != nil {
 				if err == io.EOF {
@@ -36,12 +39,31 @@ func readLines() ([]string, error) {
 				return lines, err
 			}
 		}
-		lines = append(lines, line)
+		if isLegalWord(line) {
+			lines = append(lines, line)
+		}
 		if err != nil && err != io.EOF {
 			return lines, err
 		}
 	}
 	return lines, err
+}
+
+func writeParsedDict(filename string, lines []string) {
+	file, err := os.Create("assets/" + filename)
+	if (err != nil) {
+		panic(err)
+	}
+	defer file.Close()
+
+	writer := bufio.NewWriter(file)
+	for _, line := range lines {
+		_, err := writer.WriteString(line)
+		if (err != nil) {
+			panic(err)
+		}
+	}
+	writer.Flush()
 }
 
 func test() {
@@ -57,5 +79,9 @@ func test() {
 }
 
 func main() {
-	test()
+	lines, err := readAndParseLines()
+	if (err != nil) {
+		panic(err)
+	}
+	writeParsedDict("test1.dict", lines)
 }
