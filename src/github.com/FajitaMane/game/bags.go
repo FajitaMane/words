@@ -2,7 +2,7 @@ package main
 
 import (
 	"container/list"
-	"fmt"
+	_ "fmt"
 	"math/rand"
 	"time"
 )
@@ -34,8 +34,8 @@ func NewBag() *Bag {
 				new_tile := Tile{letter}
 				bag_list.PushFront(new_tile)
 			}
-			fmt.Println("adding tile #", bag_list.Len(),
-				" to bag_list, letter=", letter)
+			//fmt.Println("adding tile #", bag_list.Len(),
+			//" to bag_list, letter=", letter)
 
 		}
 	}
