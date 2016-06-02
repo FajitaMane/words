@@ -1,8 +1,9 @@
 #ignore lib and bin
 bin
 lib
+pkg
 #ignore all dict files
 *.dict
 #ignore packages that aren't mine
 src
-!src/github.com/FajitaMane
+!src/github.com/FajitaMane/
