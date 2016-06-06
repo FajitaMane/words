@@ -15,10 +15,20 @@ n (0x6#) No Modifier
 */
 
 type Slot struct {
-	tile *Tile
+	tile     *Tile
 	modifier byte
 }
 
+func (slot *Slot) Value() uint16 {
+	switch {
+	case slot.modifier == byte('d'):
+		return slot.tile.Value() * 2
+	case slot.modifier == byte('t'):
+		return slot.tile.Value() * 3
+	}
+	return slot.tile.Value()
+}
+
 func (slot *Slot) Print() {
-	fmt.Println("Tile ", slot.tile.char, " value of ", slot.tile.Value()) 
+	fmt.Println("Tile ", slot.tile.char, " value of ", slot.tile.Value())
 }

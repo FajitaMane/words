@@ -72,11 +72,52 @@ func NewBoard() *Board {
 	return &Board{grid}
 }
 
+func (board *Board) LegalPlay(play *Play) bool {
+	for x := 0; x < len(board.grid); x++ {
+		for y := 0; y < len(board.grid[x]); y++ {
+			if board.grid[x][y].tile == nil {
+				return false
+			}
+		}
+	}
+	return true
+}
+
 func (board *Board) Print() {
+	//offset the first row
+	fmt.Print("   ")
+	for y := range board.grid {
+		if y < 10 {
+			fmt.Print(y, "   ")
+		} else {
+			fmt.Print(y, "  ")
+		}
+	}
+	fmt.Print("\n")
 	for x := range board.grid {
+		if x < 10 {
+			fmt.Print(x, "  ")
+		} else {
+			fmt.Print(x, " ")
+		}
 		for y := range board.grid[x] {
 			fmt.Print(string(board.grid[x][y].modifier), "   ")
 		}
+		if x < 10 {
+			fmt.Print(" ", x)
+		} else {
+			fmt.Print(x)
+		}
 		fmt.Print("\n\n")
 	}
+	//offset the first row
+	fmt.Print("   ")
+	for y := range board.grid {
+		if y < 10 {
+			fmt.Print(y, "   ")
+		} else {
+			fmt.Print(y, "  ")
+		}
+	}
+	fmt.Print("\n")
 }
