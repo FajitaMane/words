@@ -10,6 +10,7 @@ type Board struct {
 }
 
 //helper for defining board points
+//TODO change this shit to x and y
 type Point struct {
 	i int
 	j int
@@ -72,14 +73,30 @@ func NewBoard() *Board {
 	return &Board{grid}
 }
 
-func (board *Board) LegalPlay(play *Play) bool {
-	for x := 0; x < len(board.grid); x++ {
-		for y := 0; y < len(board.grid[x]); y++ {
-			if board.grid[x][y].tile == nil {
-				return false
-			}
+func (board *Board) IsLegalPlay(play *Play) bool {
+	//all slots must contain non-nil tile characters
+	for i := range play.word {
+		if play.word[i].tile.char == 0 {
+			return false
 		}
 	}
+	//make sure the word won't exceed the board size
+	if play.hor && play.index.i+len(play.word) > MBR {
+		return false
+	}
+	if !play.hor && play.index.j+len(play.word) > MBR {
+		return false
+	}
+	/*
+		//make sure it doesn't intersect any other tiles
+		for x := 0; x < len(board.grid); x++ {
+			for y := 0; y < len(board.grid[x]); y++ {
+				if board.grid[x][y].tile == nil {
+					return false
+				}
+			}
+		}
+	*/
 	return true
 }
 
@@ -93,7 +110,7 @@ func (board *Board) Print() {
 			fmt.Print(y, "  ")
 		}
 	}
-	fmt.Print("\n")
+	fmt.Print("\n\n")
 	for x := range board.grid {
 		if x < 10 {
 			fmt.Print(x, "  ")
@@ -110,7 +127,7 @@ func (board *Board) Print() {
 		}
 		fmt.Print("\n\n")
 	}
-	//offset the first row
+	//offset the last row
 	fmt.Print("   ")
 	for y := range board.grid {
 		if y < 10 {
