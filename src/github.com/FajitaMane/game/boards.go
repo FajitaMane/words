@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"fmt"
@@ -12,8 +12,8 @@ type Board struct {
 //helper for defining board points
 //TODO change this shit to x and y
 type Point struct {
-	i int
-	j int
+	x int
+	y int
 }
 
 //max board index
@@ -55,20 +55,20 @@ func NewBoard() *Board {
 	grid[7][7] = &Slot{&t, byte('D')}
 	//set the double letter tiles
 	for _, p := range dub_letter_points {
-		grid[p.i][p.j] = &Slot{&t, byte('d')}
-		grid[p.j][p.i] = &Slot{&t, byte('d')}
-		grid[MBR-p.j][MBR-p.i] = &Slot{&t, byte('d')}
-		grid[MBR-p.i][MBR-p.j] = &Slot{&t, byte('d')}
+		grid[p.x][p.y] = &Slot{&t, byte('d')}
+		grid[p.y][p.x] = &Slot{&t, byte('d')}
+		grid[MBR-p.y][MBR-p.x] = &Slot{&t, byte('d')}
+		grid[MBR-p.x][MBR-p.y] = &Slot{&t, byte('d')}
 	}
 	//set the triple letter tiles
 	for _, p := range trip_letter_points {
-		grid[p.i][p.j] = &Slot{&t, byte('t')}
-		grid[p.j][p.i] = &Slot{&t, byte('t')}
-		grid[MBR-p.i][MBR-p.j] = &Slot{&t, byte('t')}
-		grid[MBR-p.i][p.j] = &Slot{&t, byte('t')}
-		grid[p.i][MBR-p.j] = &Slot{&t, byte('t')}
-		grid[MBR-p.j][p.i] = &Slot{&t, byte('t')}
-		grid[p.j][MBR-p.j] = &Slot{&t, byte('t')}
+		grid[p.x][p.y] = &Slot{&t, byte('t')}
+		grid[p.y][p.x] = &Slot{&t, byte('t')}
+		grid[MBR-p.x][MBR-p.y] = &Slot{&t, byte('t')}
+		grid[MBR-p.x][p.y] = &Slot{&t, byte('t')}
+		grid[p.x][MBR-p.y] = &Slot{&t, byte('t')}
+		grid[MBR-p.y][p.x] = &Slot{&t, byte('t')}
+		grid[p.y][MBR-p.y] = &Slot{&t, byte('t')}
 	}
 	return &Board{grid}
 }
@@ -81,10 +81,10 @@ func (board *Board) IsLegalPlay(play *Play) bool {
 		}
 	}
 	//make sure the word won't exceed the board size
-	if play.hor && play.index.i+len(play.word) > MBR {
+	if play.hor && play.index.y+len(play.word) > MBR {
 		return false
 	}
-	if !play.hor && play.index.j+len(play.word) > MBR {
+	if !play.hor && play.index.x+len(play.word) > MBR {
 		return false
 	}
 	/*
