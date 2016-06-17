@@ -4,6 +4,7 @@ type Tile struct {
 	char uint8
 }
 
+/*
 //the value returned is equal to the letter's frequency * 10
 //the in-game value of this Tile is the uint16 / 10
 func (t *Tile) Value() uint16 {
@@ -37,6 +38,43 @@ func (t *Tile) Value() uint16 {
 	val_map["X"[0]] = 116
 	val_map["Y"[0]] = 84
 	val_map["Z"[0]] = 110
+
+	return val_map[t.char]
+}
+*/
+
+//just using regular scrabbble values for now
+func (t *Tile) Value() uint16 {
+	//initialize the map
+	var val_map map[uint8]uint16
+	val_map = make(map[uint8]uint16)
+	//set keys and values
+	val_map["A"[0]] = 1
+	val_map["B"[0]] = 3
+	val_map["C"[0]] = 3
+	val_map["D"[0]] = 2
+	val_map["E"[0]] = 1
+	val_map["F"[0]] = 4
+	val_map["G"[0]] = 2
+	val_map["H"[0]] = 4
+	val_map["I"[0]] = 1
+	val_map["J"[0]] = 8
+	val_map["K"[0]] = 5
+	val_map["L"[0]] = 1
+	val_map["M"[0]] = 3
+	val_map["N"[0]] = 1
+	val_map["O"[0]] = 1
+	val_map["P"[0]] = 3
+	val_map["Q"[0]] = 10
+	val_map["R"[0]] = 1
+	val_map["S"[0]] = 1
+	val_map["T"[0]] = 1
+	val_map["U"[0]] = 1
+	val_map["V"[0]] = 4
+	val_map["W"[0]] = 4
+	val_map["X"[0]] = 8
+	val_map["Y"[0]] = 4
+	val_map["Z"[0]] = 10
 
 	return val_map[t.char]
 }

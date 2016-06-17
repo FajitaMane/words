@@ -100,6 +100,22 @@ func (board *Board) IsLegalPlay(play *Play) bool {
 	return true
 }
 
+func (board *Board) ValueOfPlay(play *Play) uint16 {
+	var val uint16
+	for i := range play.word {
+		val += play.word[i].Value()
+	}
+	for i := range play.word {
+		if play.word[i].modifier == byte('D') {
+			val = val * 2
+		}
+		if play.word[i].modifier == byte('T') {
+			val = val * 3
+		}
+	}
+	return val
+}
+
 func (board *Board) Print() {
 	//offset the first row
 	fmt.Print("   ")
@@ -119,6 +135,46 @@ func (board *Board) Print() {
 		}
 		for y := range board.grid[x] {
 			fmt.Print(string(board.grid[x][y].modifier), "   ")
+		}
+		if x < 10 {
+			fmt.Print(" ", x)
+		} else {
+			fmt.Print(x)
+		}
+		fmt.Print("\n\n")
+	}
+	//offset the last row
+	fmt.Print("   ")
+	for y := range board.grid {
+		if y < 10 {
+			fmt.Print(y, "   ")
+		} else {
+			fmt.Print(y, "  ")
+		}
+	}
+	fmt.Print("\n")
+}
+
+//TODO this could use be more consise
+func (board *Board) PrintTiles() {
+	//offset the first row
+	fmt.Print("   ")
+	for y := range board.grid {
+		if y < 10 {
+			fmt.Print(y, "   ")
+		} else {
+			fmt.Print(y, "  ")
+		}
+	}
+	fmt.Print("\n\n")
+	for x := range board.grid {
+		if x < 10 {
+			fmt.Print(x, "  ")
+		} else {
+			fmt.Print(x, " ")
+		}
+		for y := range board.grid[x] {
+			fmt.Print(string(board.grid[x][y].tile.char), "   ")
 		}
 		if x < 10 {
 			fmt.Print(" ", x)
