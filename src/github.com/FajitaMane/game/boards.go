@@ -3,6 +3,8 @@ package game
 import (
 	"fmt"
 	_ "strconv"
+
+	"github.com/FajitaMane/util"
 )
 
 type Board struct {
@@ -97,6 +99,14 @@ func (board *Board) IsLegalPlay(play *Play) bool {
 			}
 		}
 	*/
+	//finally, check if the word is in the dictionary
+	b, err := util.IsWordInDict(play.Word())
+	if err != nil {
+		panic(err)
+	}
+	if !b {
+		return false
+	}
 	return true
 }
 

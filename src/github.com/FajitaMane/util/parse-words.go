@@ -1,13 +1,13 @@
-package main
+package util
 
 import (
-	"io"
-	"io/ioutil"
 	"bufio"
 	"bytes"
 	"fmt"
-	"strings"
+	"io"
+	"io/ioutil"
 	"os"
+	"strings"
 )
 
 const illegal_chars = " -'"
@@ -51,7 +51,7 @@ func readAndParseLines() ([]string, error) {
 
 func writeParsedDict(filename string, lines []string) {
 	file, err := os.Create("assets/" + filename)
-	if (err != nil) {
+	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
@@ -59,7 +59,7 @@ func writeParsedDict(filename string, lines []string) {
 	writer := bufio.NewWriter(file)
 	for _, line := range lines {
 		_, err := writer.WriteString(line)
-		if (err != nil) {
+		if err != nil {
 			panic(err)
 		}
 	}
@@ -79,9 +79,22 @@ func test() {
 }
 
 func main() {
-	lines, err := readAndParseLines()
-	if (err != nil) {
-		panic(err)
+	var word string
+	/*
+		words := make([]string, 2)
+		words[0] = "asset"
+		words[1] = "\n"
+		word = strings.Join(words, "")
+	*/
+	word = "suppose"
+	b, err := IsWordInDict(word)
+	if b {
+		fmt.Println(word, " is in the dictionary")
+	} else {
+		fmt.Println(word, " not found")
 	}
-	writeParsedDict("test1.dict", lines)
+	if err != nil {
+		fmt.Println(err)
+	}
+	//writeParsedDict("test1.dict", lines)
 }
