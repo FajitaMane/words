@@ -75,6 +75,10 @@ func NewBoard() *Board {
 	return &Board{grid}
 }
 
+func (board *Board) GetPlaySlots(point Point, hor bool, length int) []Slot {
+
+}
+
 func (board *Board) IsLegalPlay(play *Play) bool {
 	//all slots must contain non-nil tile characters
 	for i := range play.word {
@@ -126,6 +130,7 @@ func (board *Board) ValueOfPlay(play *Play) uint16 {
 	return val
 }
 
+//outputs a representation of the board's tiles to the terminal
 func (board *Board) Print() {
 	//offset the first row
 	fmt.Print("   ")
@@ -166,6 +171,7 @@ func (board *Board) Print() {
 }
 
 //TODO this could use be more consise
+//prints out a representation of the board's tiles to the terminal
 func (board *Board) PrintTiles() {
 	//offset the first row
 	fmt.Print("   ")
