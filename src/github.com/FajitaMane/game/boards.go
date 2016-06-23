@@ -2,9 +2,10 @@ package game
 
 import (
 	"fmt"
-	_ "strconv"
+	"strconv"
 
 	"github.com/FajitaMane/util"
+	"github.com/fatih/color"
 )
 
 type Board struct {
@@ -35,7 +36,7 @@ func NewBoard() *Board {
 	trip_letter_points[0] = Point{1, 5}
 	trip_letter_points[1] = Point{5, 5}
 	//empty tile
-	t := Tile{uint8(156)}
+	t := Tile{uint8(0)}
 	//instantiate the empty grid
 	grid := make([][]*Slot, 15)
 	for i := range grid {
@@ -75,8 +76,16 @@ func NewBoard() *Board {
 	return &Board{grid}
 }
 
-func (board *Board) GetPlaySlots(point Point, hor bool, length int) []Slot {
-
+func (board *Board) GetPlaySlots(point Point, hor bool, length int) []*Slot {
+	slots := make([]*Slot, length)
+	for i := range slots {
+		if hor {
+			slots[i] = board.grid[point.x+i][point.y]
+		} else {
+			slots[i] = board.grid[point.x][point.y+i]
+		}
+	}
+	return slots
 }
 
 func (board *Board) IsLegalPlay(play *Play) bool {
@@ -200,13 +209,86 @@ func (board *Board) PrintTiles() {
 		fmt.Print("\n\n")
 	}
 	//offset the last row
-	fmt.Print("   ")
+}
+
+const M = 3 //margin of three for each column
+//prints out the representation of the board that the client sees
+func (board *Board) PrintF() {
+	//offset the first row
+	var first_row string
 	for y := range board.grid {
+		first_row += strconv.Itoa(y)
 		if y < 10 {
-			fmt.Print(y, "   ")
+			first_row += "   "
 		} else {
-			fmt.Print(y, "  ")
+			first_row += "  "
 		}
 	}
+	color.White(first_row)
 	fmt.Print("\n")
+	//set the lines between the top and bottom rows
+	for y := range board.grid {
+		color.Set(color.FgWhite)
+		fmt.Print(y + 1)
+		if y+1 < 10 {
+			fmt.Print("   ")
+		} else {
+			fmt.Print("  ")
+		}
+		for x := range board.grid {
+			board.PrintSlotF(board.grid[y][x])
+			if x < 10 {
+				fmt.Print("   ")
+			} else {
+				fmt.Print("  ")
+			}
+		}
+		color.Set(color.FgWhite)
+		if y+1 < 10 {
+			fmt.Print("  ")
+		} else {
+			fmt.Print(" ")
+		}
+		fmt.Print(y + 1)
+		fmt.Print("\n\n")
+	}
+	//offset the last row
+	var last_row string
+	for y := range board.grid {
+		last_row += strconv.Itoa(y)
+		if y < 10 {
+			last_row += "   "
+		} else {
+			last_row += "  "
+		}
+	}
+	color.White(last_row)
+}
+
+func (board *Board) PrintSlotF(slot *Slot) {
+	if slot.tile.char != 0 {
+		color.Set(color.FgBlue)
+		fmt.Print(slot.tile.char)
+	} else {
+		if slot.modifier != byte('n') {
+			if slot.modifier == byte('t') {
+				color.Set(color.FgGreen)
+				fmt.Print("t")
+			}
+			if slot.modifier == byte('d') {
+				color.Set(color.FgCyan)
+				fmt.Print("d")
+			}
+			if slot.modifier == byte('T') {
+				color.Set(color.FgYellow)
+				fmt.Print("T")
+			}
+			if slot.modifier == byte('D') {
+				color.Set(color.FgRed)
+				fmt.Print("D")
+			}
+		} else {
+			fmt.Print(" ")
+		}
+	}
 }
