@@ -2,7 +2,7 @@ package game
 
 import (
 	"container/list"
-	_ "fmt"
+	"fmt"
 	"math/rand"
 	"time"
 )
@@ -23,17 +23,12 @@ func NewBag() *Bag {
 	bag_list := list.New()
 	//iterate through every letter in the alphabet
 	for x, _ := range alphabet {
-		var val uint8
 		letter := alphabet[x : x+1][0]
-		tile := Tile{letter}
-		val = tile.Frequency()
+		fmt.Println("adding ", string(letter))
+		val_tile := Tile{letter}
+		val := val_tile.Frequency()
 		for i := 0; uint8(i) < val; i++ {
-			if i == 0 {
-				bag_list.PushFront(tile)
-			} else {
-				new_tile := Tile{letter}
-				bag_list.PushFront(new_tile)
-			}
+			bag_list.PushFront(&Tile{letter})
 			//fmt.Println("adding tile #", bag_list.Len(),
 			//" to bag_list, letter=", letter)
 
@@ -41,12 +36,14 @@ func NewBag() *Bag {
 	}
 	var bag Bag
 	bag = Bag{bag_list}
+	fmt.Println(bag_list.Len())
 	return &bag
 }
 
 //seed a new random number and return a letter at index n
 func (bag *Bag) Draw() Tile {
-	if bag.tiles.Len() == 0 {
+	fmt.Println("bag size = ", bag.Size())
+	if bag.Size() == 0 {
 		panic("bag is empty")
 	}
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -61,4 +58,8 @@ func (bag *Bag) Draw() Tile {
 		i++
 	}
 	panic("couldn't find index")
+}
+
+func (bag *Bag) Size() int {
+	return bag.tiles.Len()
 }

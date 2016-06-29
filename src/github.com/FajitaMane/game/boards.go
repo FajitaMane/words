@@ -31,7 +31,6 @@ func NewBoard() *Board {
 	dub_letter_points[2] = Point{6, 3}
 	dub_letter_points[3] = Point{8, 3}
 	dub_letter_points[4] = Point{7, 4}
-	dub_letter_points[5] = Point{6, 6}
 	trip_letter_points := make([]Point, 2)
 	trip_letter_points[0] = Point{1, 5}
 	trip_letter_points[1] = Point{5, 5}
@@ -71,7 +70,8 @@ func NewBoard() *Board {
 		grid[MBR-p.x][p.y] = &Slot{&t, byte('t')}
 		grid[p.x][MBR-p.y] = &Slot{&t, byte('t')}
 		grid[MBR-p.y][p.x] = &Slot{&t, byte('t')}
-		grid[p.y][MBR-p.y] = &Slot{&t, byte('t')}
+		grid[MBR-p.y][MBR-p.x] = &Slot{&t, byte('t')}
+		grid[p.y][MBR-p.x] = &Slot{&t, byte('t')}
 	}
 	return &Board{grid}
 }
